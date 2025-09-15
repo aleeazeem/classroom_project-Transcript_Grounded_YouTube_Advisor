@@ -11,7 +11,8 @@ The system analyzes transcripts from a `transcripts/` folder containing two ~1-h
 
 ## Prerequisites
 
-Ensure you have Python 3.10.18 installed on your system before proceeding with the setup. There might be issues in case if you have the above version
+- Ensure you have Python 3.10.18 installed on your system before proceeding with the setup. There might be issues in case if you have the above version
+- create .env file at root level and add OPENAI_API_KEY 
 
 ## Installation
 
