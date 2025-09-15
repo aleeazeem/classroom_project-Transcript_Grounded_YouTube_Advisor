@@ -1,0 +1,18 @@
+data_ingestion:
+  input_path: "./transcripts/hayden.txt"
+  output_path: "./output_files/storytelling/data.csv"
+  
+data_preprocessing:
+  group_size: 3
+  overlap: 10
+  input_path: "./output_files/storytelling/data.csv"
+  output_path: "./output_files/storytelling/clean_data.csv"
+
+model_embedding:
+  transformer_model: "all-MiniLM-L6-v2"
+  chroma_db_path: "./chroma_db"
+  db_collection_name: "storytelling_video_transcripts"
+  input_path: "./output_files/storytelling/clean_data.csv"
+
+common:
+  final_output_path: "./output_files/you_tube_trans.csv"

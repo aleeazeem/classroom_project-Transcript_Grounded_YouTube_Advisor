@@ -1,0 +1,96 @@
+schema: '2.0'
+stages:
+  ingest:
+    cmd: python src/core/data_ingestion.py
+    deps:
+    - path: configs/introduction.yaml
+      hash: md5
+      md5: db9e4541aadc4ccbd12626a0ea6dda59
+      size: 537
+    - path: configs/storytelling.yaml
+      hash: md5
+      md5: 0cbda57b534c93376476ba81cc23632f
+      size: 546
+    - path: src/core/data_ingestion.py
+      hash: md5
+      md5: a656cf03a3c5aa1b05402fb5b9ed1eb6
+      size: 1830
+    - path: transcripts/
+      hash: md5
+      md5: ee2a727c7ba2216e6e807caaaa93100d.dir
+      size: 219617
+      nfiles: 2
+    outs:
+    - path: output_files/introduction/data.csv
+      hash: md5
+      md5: 8e39c10a3e64e78943a94225de6c03fa
+      size: 91973
+    - path: output_files/storytelling/data.csv
+      hash: md5
+      md5: a8e713d22b1c763cde9bb3a6963b21d8
+      size: 116069
+  preprocess:
+    cmd: python src/core/data_preprocessing.py
+    deps:
+    - path: output_files/introduction/data.csv
+      hash: md5
+      md5: 8e39c10a3e64e78943a94225de6c03fa
+      size: 91973
+    - path: output_files/storytelling/data.csv
+      hash: md5
+      md5: a8e713d22b1c763cde9bb3a6963b21d8
+      size: 116069
+    - path: src/core/data_preprocessing.py
+      hash: md5
+      md5: 0e9b14c67b891e635f56d0d1e6c33a7d
+      size: 1322
+    outs:
+    - path: output_files/introduction/clean_data.csv
+      hash: md5
+      md5: ee047814810e858550d40ee221284664
+      size: 171985
+    - path: output_files/storytelling/clean_data.csv
+      hash: md5
+      md5: 8ef41a884266ab2996047f6a2b9b2c28
+      size: 217215
+  embed:
+    cmd: python src/core/embedding.py
+    deps:
+    - path: output_files/introduction/clean_data.csv
+      hash: md5
+      md5: ee047814810e858550d40ee221284664
+      size: 171985
+    - path: output_files/storytelling/clean_data.csv
+      hash: md5
+      md5: 8ef41a884266ab2996047f6a2b9b2c28
+      size: 217215
+    - path: src/core/embedding.py
+      hash: md5
+      md5: edc817b5d290070c6b10a200b2b534d8
+      size: 1675
+    outs:
+    - path: chroma_db/
+      hash: md5
+      md5: d3782672aa52914dd6477f7627ce5c06.dir
+      size: 4747428
+      nfiles: 5
+    - path: output_files/you_tube_trans.csv
+      hash: md5
+      md5: 3c3a55a7ed4d75eecc6db298f471f209
+      size: 366186
+  evaluate:
+    cmd: python src/core/evaluation.py
+    deps:
+    - path: output_files/you_tube_trans.csv
+      hash: md5
+      md5: 3c3a55a7ed4d75eecc6db298f471f209
+      size: 366186
+    - path: src/core/embedding.py
+      hash: md5
+      md5: edc817b5d290070c6b10a200b2b534d8
+      size: 1675
+    outs:
+    - path: output_files/eval_results.json
+      hash: md5
+      md5: 9dec1703d598879c013f746617e73a38
+      size: 255

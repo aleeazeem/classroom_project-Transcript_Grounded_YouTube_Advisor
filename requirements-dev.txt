@@ -1,0 +1,4 @@
+-r requirements.txt
+dvc[s3]      # or dvc[gdrive], dvc[ssh] depending on your remote
+pytest
+black

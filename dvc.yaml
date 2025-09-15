@@ -1,0 +1,46 @@
+stages:
+  ingest:
+    cmd: python src/core/data_ingestion.py
+    deps:
+      - src/core/data_ingestion.py
+      - configs/introduction.yaml
+      - configs/storytelling.yaml
+      - transcripts/
+    outs:
+      - output_files/introduction/data.csv
+      - output_files/storytelling/data.csv
+
+  preprocess:
+    cmd: python src/core/data_preprocessing.py
+    deps:
+      - src/core/data_preprocessing.py
+      - output_files/introduction/data.csv
+      - output_files/storytelling/data.csv
+    outs:
+      - output_files/introduction/clean_data.csv
+      - output_files/storytelling/clean_data.csv
+
+  embed:
+    cmd: python src/core/embedding.py
+    deps:
+      - src/core/embedding.py
+      - output_files/introduction/clean_data.csv
+      - output_files/storytelling/clean_data.csv
+    outs:
+      - output_files/you_tube_trans.csv
+      - chroma_db/
+  evaluate:
+    cmd: python src/core/evaluation.py
+    deps:
+      - src/core/embedding.py
+      - output_files/you_tube_trans.csv
+    outs:
+      - output_files/eval_results.json
+params:
+- dvclive/params.yaml
+metrics:
+- dvclive/metrics.json
+plots:
+- dvclive/plots/metrics:
+    x: step
+
